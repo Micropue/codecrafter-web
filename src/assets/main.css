@@ -1,0 +1,15 @@
+* {
+  margin: 0;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  cursor: default;
+}
+
+body #app {
+  width: 100%;
+  height: 100%;
+}/*# sourceMappingURL=main.css.map */
