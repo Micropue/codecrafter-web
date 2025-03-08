@@ -1,5 +1,3 @@
 <template>
-    <div>
-        家
-    </div>
+    <el-empty description="咱不支持" />
 </template>

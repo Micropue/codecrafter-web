@@ -6,10 +6,17 @@ html, body {
   height: 100%;
   width: 100%;
   overflow: hidden;
-  cursor: default;
 }
 
 body #app {
   width: 100%;
   height: 100%;
+}
+
+:root {
+  --inverted:0%;
+}
+
+html.dark {
+  --inverted:100%;
 }/*# sourceMappingURL=main.css.map */

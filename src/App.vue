@@ -1,13 +1,23 @@
 <template>
     <div>
         <Header></Header>
+        <Loader></Loader>
         <el-container>
             <Router-view></Router-view>
         </el-container>
     </div>
 </template>
-<script setup>
+<script setup lang="ts">
 import Header from './components/header.vue'
+import { onMounted } from 'vue'
+import Loader from './components/loader.vue'
+import { cookie } from './api/setcookie'
+//初始化缓存主题配置
+onMounted(()=>{
+    const theme = cookie.get('theme')
+    console.log(theme);
+    if(theme) theme == 'dark' ? document.getElementsByTagName('html')[0].classList.add('dark') : undefined
+})
 </script>
 <style scoped lang="scss">
 div {

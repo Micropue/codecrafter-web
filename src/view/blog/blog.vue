@@ -1,5 +1,3 @@
 <template>
-    <div>
-        论坛
-    </div>
+    <el-empty description="暂不支持" />
 </template>

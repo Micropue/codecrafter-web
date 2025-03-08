@@ -2,23 +2,28 @@
     <el-header>
         <div class="logo">
             <img src="../assets/logo.png" alt="logo">
-            <p @click="$router.push('/')">CodeCrafter</p>
+            <img @click="$router.push('/')" src="../assets/logo-text.png" alt="logo-text">
+            <p>官方论坛</p>
         </div>
         <div class="control">
-            <el-input v-model="data.searchValue" style="max-width: 600px" placeholder="Please input"
+            <el-input v-model="data.searchValue" style="max-width: 600px" placeholder="搜索"
                 class="input-with-select item">
                 <template #prepend>
                     <el-button :icon="Search" />
                 </template>
             </el-input>
             <div class="pages">
-                <p>加入我们</p>
-                <p @click="$router.push('/community.html')">社区</p>
-                <p @click="$router.push('/blog.html')">博客</p>
-                <p @click="$router.push('/product.html')">项目</p>
+                <p class="link" @click="$router.push('/joinus.html')">加入我们</p>
+                <p class="link" @click="$router.push('/community.html')">社区</p>
+                <p class="link" @click="$router.push('/blog.html')">博客</p>
+                <p class="link" @click="$router.push('/product.html')">项目</p>
             </div>
             <el-switch class="item" inline-prompt v-model="data.themeValue" :active-action-icon="Sunny"
                 :inactive-action-icon="Moon" @change="toggleTheme"></el-switch>
+            <div class="auth">
+                <el-button type="primary">登录</el-button>
+                <el-button type="primary" plain>注册</el-button>
+            </div>
         </div>
     </el-header>
 </template>
@@ -26,16 +31,18 @@
 import { Search, Sunny, Moon } from '@element-plus/icons-vue'
 import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
+import { cookie } from '@/api/setcookie'
 const $router = useRouter()
 
 const data = reactive({
     searchValue: "",
-    themeValue: true,
+    themeValue: cookie.get('theme') == 'dark' ? false : true,
 })
-
+//切换主题
 const toggleTheme = function () {
     const e = document.getElementsByTagName("html")[0]
     data.themeValue ? e.classList.remove("dark") : e.classList.add("dark")
+    cookie.set("theme", data.themeValue ? "light" : "dark")
 }
 </script>
 <style scoped lang="scss">
@@ -50,34 +57,15 @@ const toggleTheme = function () {
     .logo {
         display: flex;
         align-items: center;
+        cursor: pointer;
 
         img[alt=logo] {
             width: 60px;
             height: 60px;
         }
-
-        p {
-            font-size: 19px;
-            font-weight: 100;
-            position: relative;
-            color: var(--el-text-color-primary);
-            margin:0 10px;
-            &::after {
-                position: absolute;
-                content: '';
-                bottom: 0;
-                left: 0;
-                right: 0;
-                margin: auto;
-                height: 1px;
-                width: 0%;
-                background-color: rgb(0, 153, 255);
-                transition: width 0.2s;
-            }
-
-            &:hover::after {
-                width: 100%;
-            }
+        img[alt=logo-text]{
+            width:130px;
+            filter:invert(var(--inverted));
         }
     }
 
@@ -97,6 +85,7 @@ const toggleTheme = function () {
             p {
                 position: relative;
                 color: var(--el-text-color-primary);
+                font-size: 14px;
 
                 &::after {
                     position: absolute;
@@ -120,6 +109,16 @@ const toggleTheme = function () {
         .item {
             margin: 0px 10px;
         }
+        .auth{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-left:10px;
+        }
     }
+}
+
+.link {
+    cursor: pointer;
 }
 </style>
