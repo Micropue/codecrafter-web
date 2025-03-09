@@ -38,3 +38,5 @@ npm run dev
 定义了检测登录的API返回数据类型`api/apitypes.ts`
 
 封装了xhr请求函数：`api/xhr.ts`
+
+新增了搜索历史保存功能，最多保存数量可以通过`api/config.ts`来设置
