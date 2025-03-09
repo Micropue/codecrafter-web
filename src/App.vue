@@ -15,7 +15,6 @@ import { cookie } from './api/setcookie'
 //初始化缓存主题配置
 onMounted(()=>{
     const theme = cookie.get('theme')
-    console.log(theme);
     if(theme) theme == 'dark' ? document.getElementsByTagName('html')[0].classList.add('dark') : undefined
 })
 </script>

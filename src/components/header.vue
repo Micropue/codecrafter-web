@@ -6,12 +6,8 @@
             <p>官方论坛</p>
         </div>
         <div class="control">
-            <el-input v-model="data.searchValue" style="max-width: 600px" placeholder="搜索"
-                class="input-with-select item">
-                <template #prepend>
-                    <el-button :icon="Search" />
-                </template>
-            </el-input>
+            <!-- 搜索框 -->
+            <Search></Search>
             <div class="pages">
                 <p class="link" @click="$router.push('/joinus.html')">加入我们</p>
                 <p class="link" @click="$router.push('/community.html')">社区</p>
@@ -20,22 +16,21 @@
             </div>
             <el-switch class="item" inline-prompt v-model="data.themeValue" :active-action-icon="Sunny"
                 :inactive-action-icon="Moon" @change="toggleTheme"></el-switch>
-            <div class="auth">
-                <el-button type="primary">登录</el-button>
-                <el-button type="primary" plain>注册</el-button>
-            </div>
+            <!--登录按钮-->
+            <LoginRegButton></LoginRegButton>
         </div>
     </el-header>
 </template>
 <script setup lang="ts">
-import { Search, Sunny, Moon } from '@element-plus/icons-vue'
+import { Sunny, Moon } from '@element-plus/icons-vue'
 import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { cookie } from '@/api/setcookie'
+import LoginRegButton from './login-reg.button.vue'
+import Search from './search.vue'
 const $router = useRouter()
 
 const data = reactive({
-    searchValue: "",
     themeValue: cookie.get('theme') == 'dark' ? false : true,
 })
 //切换主题
@@ -63,9 +58,10 @@ const toggleTheme = function () {
             width: 60px;
             height: 60px;
         }
-        img[alt=logo-text]{
-            width:130px;
-            filter:invert(var(--inverted));
+
+        img[alt=logo-text] {
+            width: 130px;
+            filter: invert(var(--inverted));
         }
     }
 
@@ -108,12 +104,6 @@ const toggleTheme = function () {
 
         .item {
             margin: 0px 10px;
-        }
-        .auth{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-left:10px;
         }
     }
 }

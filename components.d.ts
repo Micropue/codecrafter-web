@@ -8,6 +8,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    ElAutocomplete: typeof import('element-plus/es')['ElAutocomplete']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElContainer: typeof import('element-plus/es')['ElContainer']
     ElEmpty: typeof import('element-plus/es')['ElEmpty']
@@ -17,7 +18,12 @@ declare module 'vue' {
     ElSwitch: typeof import('element-plus/es')['ElSwitch']
     Header: typeof import('./src/components/header.vue')['default']
     Loader: typeof import('./src/components/loader.vue')['default']
+    'LoginReg.button': typeof import('./src/components/login-reg.button.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Search: typeof import('./src/components/search.vue')['default']
+  }
+  export interface ComponentCustomProperties {
+    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }
