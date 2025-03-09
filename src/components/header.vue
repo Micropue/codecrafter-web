@@ -1,8 +1,8 @@
 <template>
     <el-header>
-        <div class="logo">
+        <div class="logo" @click="$router.push('/')">
             <img src="../assets/logo.png" alt="logo">
-            <img @click="$router.push('/')" src="../assets/logo-text.png" alt="logo-text">
+            <img src="../assets/logo-text.png" alt="logo-text">
             <p>官方论坛</p>
         </div>
         <div class="control">
