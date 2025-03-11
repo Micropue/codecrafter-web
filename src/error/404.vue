@@ -1,10 +1,12 @@
 <template>
-    <div class="container">
-        <div class="loader"></div>
-        <div class="loader"></div>
-        <div class="loader"></div>
+    <div>
+        <div class="container">
+            <div class="loader"></div>
+            <div class="loader"></div>
+            <div class="loader"></div>
+        </div>
+        <p>你进入了不存在的页面。。。</p>
     </div>
-    <p>你进入了不存在的页面。。。</p>
 </template>
 <style lang="scss" scoped>
 p {
