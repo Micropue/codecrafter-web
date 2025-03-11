@@ -20,6 +20,7 @@
     "@types/node": "^22.10.7",
     "@vitejs/plugin-vue": "^5.2.1",
     "@vue/tsconfig": "^0.7.0",
+    "marked": "^15.0.7",
     "npm-run-all2": "^7.0.2",
     "sass-embedded": "^1.85.1",
     "sober-theme": "^0.0.2",

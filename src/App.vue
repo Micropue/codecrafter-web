@@ -5,7 +5,7 @@
         <Navigation></Navigation>
       </div>
       <Appbar></Appbar>
-      <s-scroll-view style="flex-grow: 1">
+      <s-scroll-view style="flex-grow: 1;scroll-behavior:smooth">
         <main style="height: 100%;">
           <Router-view></Router-view>
         </main>

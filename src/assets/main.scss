@@ -19,3 +19,24 @@ body #app {
 s-page[dark] {
     --inverted: 100%;
 }
+a{
+    $color:rgb(0, 166, 255);
+    color:$color;
+    text-decoration: none;
+    position: relative;
+    &::after{
+        content:'';
+        position: absolute;
+        bottom:0;
+        left:0;
+        right:0;
+        width:0%;
+        height:1px;
+        margin:auto;
+        background-color: $color;
+        transition: width 0.3s;
+    }
+    &:hover::after{
+        width:100%;
+    }
+}

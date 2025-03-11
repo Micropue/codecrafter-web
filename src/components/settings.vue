@@ -36,10 +36,11 @@
                 </div>
             </div>
             <h3>关于</h3>
-            <p style="color:gray;font-size:13px;margin-top:20px;">基于Vue3开发的通用博客系统（非模板），所有内容均归CodeCrafter团队所有。codecrafter & codecrafter团队©️2025</p>
+            <p style="color:gray;font-size:13px;margin-top:20px;">基于Vue3开发的通用博客系统（非模板），所有内容均归CodeCrafter团队所有。codecrafter
+                & codecrafter团队<br>©️2025</p>
             <br>
-            <s-button>关于网站</s-button>
-            <s-button>贡献人员</s-button>
+            <s-button @click="$router.push('/about')">关于网站</s-button>
+            <s-button @click="$router.push('/about')">贡献人员</s-button>
         </div>
         <s-button slot="action" type="text">完成</s-button>
     </s-dialog>
@@ -50,6 +51,8 @@ import { onMounted, reactive } from 'vue'
 import { cookie } from '@/api/setcookie'
 import { THEME_COOKIE_NAME, THEMEMODE_COOKIE_NAME } from '@/api/config'
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
+const $router = useRouter()
 const $store = useStore()
 const data = reactive<{
     themecolor: any
