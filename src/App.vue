@@ -7,12 +7,30 @@
       <Appbar></Appbar>
       <s-scroll-view style="flex-grow: 1;scroll-behavior:smooth">
         <main style="height: 100%;">
-          <Router-view></Router-view>
+          <Router-view v-slot="{ Component }">
+            <Transition name="opacity" mode="out-in">
+              <component :is="Component"></component>
+            </Transition>
+          </Router-view>
         </main>
       </s-scroll-view>
     </s-drawer>
   </s-page>
 </template>
+<style scoped>
+.opacity-enter-active,
+.opacity-leave-active {
+    filter:blur(0px);
+    opacity: 1;
+    transition: all 0.3s;
+}
+
+.opacity-enter-from,
+.opacity-leave-to {
+    filter:blur(10px);
+    opacity: 0;
+}
+</style>
 <script setup lang="ts">
 import Navigation from './components/navigation.vue'
 import Appbar from './components/appbar.vue'
