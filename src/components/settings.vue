@@ -12,15 +12,15 @@
             <h3>cookie使用</h3>
             <div class="line">
                 <p>动态主题设置</p>
-                <s-text-field style="max-width:130px;" readOnly disabled :value="THEME_COOKIE_NAME"></s-text-field>
+                <s-switch disabled="true" checked="true"></s-switch>
             </div>
             <div class="line">
                 <p>主题模式设置</p>
-                <s-text-field style="max-width:130px;" readOnly disabled :value="THEMEMODE_COOKIE_NAME"></s-text-field>
+                <s-switch disabled="true" checked="true"></s-switch>
             </div>
             <div class="line">
                 <p>搜索历史</p>
-                <s-button>清空</s-button>
+                <s-button @click="methods.clearHistory">清空</s-button>
             </div>
             <p style="color:gray;font-size:13px;margin-top:20px;">您无法更改cookie的创建权限，使用此网站代表您遵循此隐私政策。使用cookie是为了更好的网站体验。
             </p>
@@ -49,9 +49,10 @@
 import { create as createtheme } from 'sober-theme'
 import { onMounted, reactive } from 'vue'
 import { cookie } from '@/api/setcookie'
-import { THEME_COOKIE_NAME, THEMEMODE_COOKIE_NAME } from '@/api/config'
+import { SEARCH_HISTORY_NAME, THEME_COOKIE_NAME, THEMEMODE_COOKIE_NAME } from '@/api/config'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import { Snackbar } from 'sober'
 const $router = useRouter()
 const $store = useStore()
 const data = reactive<{
@@ -66,6 +67,10 @@ const methods = {
     },
     getTheme() {
         data.themecolor = cookie.get(THEME_COOKIE_NAME) || "#005ac3"
+    },
+    clearHistory() {
+        cookie.set(SEARCH_HISTORY_NAME, "")
+        Snackbar.builder("清空完成，请刷新页面。")
     }
 }
 onMounted(methods.getTheme)
@@ -103,6 +108,7 @@ label[for="__color-input__"] {
     input {
         position: absolute;
         opacity: 0;
+        pointer-events: none;
     }
 }
 

@@ -4,8 +4,9 @@ import store from '@/store/store'
 const routes = [
     { name: "home", path: "/", component: () => import('./view/home/home.vue') },
     {
-        name: "about", path: "/about", component: () => import('./view/about/about.vue'),
+        path: "/about", component: () => import('./view/about/about.vue'),
         children: [
+            { name: "about", path: "", component: () => import('./view/about/about/about.vue') },
             { name: "joinus", path: "joinus", component: () => import('./view/about/joinus/joinus.vue') }
         ]
     },
