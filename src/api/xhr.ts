@@ -5,10 +5,10 @@ interface Options {
     data?: {
         [query: string]: string
     },//数据
-    success?(data?: any, status?: number): void, //请求成功：200
-    error?(status?: number, message?: string): void //请求失败 !200
+    success?(data: any, status: number): void, //请求成功：200
+    error?(status: number, message: string): void //请求失败 !200
 }
-function Ajax(options: Options) {
+function Ajax(options: Options):Promise<null> {
     const type = options.type === "POST" ? "POST" : "GET"
     const url = options.url ?? console.error("can't find params \"url\" or it's empty")
     let data = ""

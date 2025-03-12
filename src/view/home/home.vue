@@ -3,8 +3,8 @@
         <div class="background">
             <div class="generate">
                 <div class="title">
-                    <img src="../../assets/logo.png" alt="logo">
-                    <img src="../../assets/logo-text.png" alt="logo-text">
+                    <img src="../../assets/logo.png" draggable="false" alt="logo">
+                    <img src="../../assets/logo-text.png" draggable="false" alt="logo-text">
                 </div>
                 <h1>由<span class="special">全国各地</span>学生组成的技术团队的<span class="special">官方论坛</span></h1>
                 <div class="buttons">
@@ -22,7 +22,8 @@
                         </s-icon>
                         前往社区
                     </s-button>
-                    <s-icon-button type="filled-tonal" onclick="window.open('https://github.com/Micropue/codecrafter-web/')">
+                    <s-icon-button type="filled-tonal"
+                        onclick="window.open('https://github.com/Micropue/codecrafter-web/')">
                         <s-icon>
                             <svg data-v-eb706c3e="" viewBox="0 0 1024 1024">
                                 <path data-v-eb706c3e=""
@@ -36,7 +37,8 @@
         </div>
     </div>
 </template>
-<script setup>
+<script setup lang="ts">
+import { ref } from 'vue';
 import { useRouter } from 'vue-router'
 const $router = useRouter()
 </script>
@@ -48,6 +50,10 @@ const $router = useRouter()
     border-radius: 10px;
 
     .buttons {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
         s-button {
             margin: 0px 10px;
         }

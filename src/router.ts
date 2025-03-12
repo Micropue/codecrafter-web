@@ -14,6 +14,15 @@ const routes = [
     { name: "blog", path: "/blog", component: () => import('./view/blog/blog.vue') },
     { name: "projects", path: "/projects", component: () => import('./view/projects/projects.vue') },
     { name: "chat", path: "/chat", component: () => import('./view/chat/chat.vue') },
+    { name: "auth", path: "/auth", component: () => import('./view/auth/auth.vue') },
+    {
+        path: "/auth/login", component: () => import('./view/auth/login/index.vue'),
+        children: [
+            { name: "login", path: "", component: () => import('./view/auth/login/login/login.vue') },
+            { name: "register", path: "register", component: () => import('./view/auth/login/register/register.vue') },
+            { name: "restpwd", path: "restpwd", component: () => import('./view/auth/login/restpwd/restpwd.vue') },
+        ]
+    },
     { name: "404", path: "/:catchAll()", component: Error404 }
 ]
 const router = createRouter({
@@ -22,7 +31,11 @@ const router = createRouter({
 })
 router.beforeEach((to, from, next) => {
     store.commit('load')
-    next()
+    if(to.name == "auth"){
+        store.state.logined ? next() : next("/auth/login")
+    }else{
+        next()
+    }
 })
 router.afterEach((to, from) => {
     store.commit('loaded')
