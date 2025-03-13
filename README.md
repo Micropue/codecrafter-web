@@ -72,3 +72,13 @@ npm run dev
 添加了加入我们的功能
 
 设置功能区的展示cookie名称改为显示不可控的`switch`组件。
+
+#### 2025-3-13
+
+路由守卫点击个人按钮未登录时会跳转到`/auth/login`。
+
+#### 2025-3-14
+
+修改了目录逻辑，变为`/auth/login` `/auth/register` `/auth/restpwd`
+
+完善了注册和登录系统
