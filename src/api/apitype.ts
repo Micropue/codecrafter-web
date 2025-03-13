@@ -18,3 +18,8 @@ export interface Response_Register {
     code: number,
     msg: string
 }
+//获取验证码
+export interface Response_GetCode {
+    code: number,
+    msg?: string
+}

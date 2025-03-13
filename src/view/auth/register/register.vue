@@ -1,8 +1,8 @@
 <template>
-    <div>
+    <div class="main">
         <h1>加入论坛</h1>
-        <p class="tip">成为会员后将支持发布文章、评论、点赞、并进行私信聊天等。</p>
-        <s-text-field label="设置用户名" v-model="formData.username" maxLength="20" countered="true">
+        <s-text-field label="设置用户名" @input="methods.checkRegex.username" :error="!regex.username"
+            v-model="formData.username" maxLength="20" countered="true">
             <s-icon slot="start">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
                     <path
@@ -15,7 +15,8 @@
             </s-icon-button>
             <div slot="text">需2-20位且不可包含空格</div>
         </s-text-field>
-        <s-text-field label="设置密码" v-model="formData.password" type="password" maxLength="16" countered="true">
+        <s-text-field label="设置密码" @input="methods.checkRegex.password" :error="!regex.password"
+            v-model="formData.password" type="password" maxLength="16" countered="true">
             <s-icon slot="start">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
                     <path
@@ -28,7 +29,8 @@
             </s-icon-button>
             <div slot="text">需6-16位且仅可包含数字、大小写字母、短横线和下划线</div>
         </s-text-field>
-        <s-text-field label="确认密码" v-model="formData.repassword" type="password" maxLength="16" countered="true">
+        <s-text-field label="确认密码" @input="methods.checkRegex.repassword" :error="!regex.repassword"
+            v-model="formData.repassword" type="password" maxLength="16" countered="true">
             <s-icon slot="start">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
                     <path
@@ -41,7 +43,7 @@
             </s-icon-button>
             <div slot="text">需与第一次输入一致</div>
         </s-text-field>
-        <s-text-field label="邮件" v-model="formData.email">
+        <s-text-field label="邮件" @input="methods.checkRegex.email" :error="!regex.email" v-model="formData.email">
             <s-icon-button slot="end" v-if="formData.email" @click="formData.email = ''">
                 <s-icon name="close"></s-icon>
             </s-icon-button>
@@ -60,14 +62,14 @@
                     <s-icon name="close"></s-icon>
                 </s-icon-button>
             </s-text-field>
-            <s-button :disabled="status.is_codeSending || status.codeButtonLabel != '发送验证码'" @click="methods.sendCode">
+            <s-button :disabled="status.is_codeSending || status.codeButtonLabel != 0" @click="methods.sendCode">
                 <s-circular-progress indeterminate="true" slot="start"
                     v-if="status.is_codeSending"></s-circular-progress>
-                {{ status.codeButtonLabel }}
+                {{ status.codeButtonLabel == 0 ? "发送验证码" : `请${status.codeButtonLabel}秒后再试` }}
             </s-button>
         </div>
         <s-divider>注册代表您同意我们的隐私政策</s-divider>
-        <s-button :disabled="status.is_registering" @click="methods.login">
+        <s-button :disabled="status.is_registering" @click="methods.register">
             <s-circular-progress indeterminate="true" slot="start" v-if="status.is_registering"></s-circular-progress>
             注册
         </s-button>
@@ -79,8 +81,10 @@ import APIURI from '@/api/apiurls'
 import Ajax from '@/api/xhr'
 import { Snackbar } from 'sober'
 import { reactive } from 'vue'
-import type { Response_Register } from '@/api/apitype'
+import type { Response_GetCode, Response_Register } from '@/api/apitype'
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
+const $router = useRouter()
 const $store = useStore()
 interface FormData {
     username: string,
@@ -92,12 +96,12 @@ interface FormData {
 interface Status {
     is_registering: boolean
     is_codeSending: boolean
-    codeButtonLabel: "发送验证码" | number
+    codeButtonLabel: number
 }
 const status = reactive<Status>({
     is_registering: false,
     is_codeSending: false,
-    codeButtonLabel: "发送验证码"
+    codeButtonLabel: 0
 })
 const formData = reactive<FormData>({
     username: "",
@@ -106,11 +110,74 @@ const formData = reactive<FormData>({
     email: "",
     code: ""
 })
-
+const regex = reactive({
+    username: false,
+    password: false,
+    repassword: false,
+    email: false,
+})
 const methods = {
-    login() {
-        if (!formData.username || !formData.password) {
+    checkRegex: {
+        username: () => {
+            regex.username = /^(.){2,20}$/.test(formData.username)
+        },
+        password: () => {
+            regex.password = /^([a-zA-Z0-9_\-]*){6,16}$/.test(formData.password)
+        },
+        repassword: () => {
+            regex.repassword = formData.password == formData.repassword
+        },
+        email: () => {
+            regex.email = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(formData.email)
+        }
+    },
+    sendCode() {
+        if (!regex.email) {
+            Snackbar.builder({ text: "请填写正确的邮箱地址", type: "error" })
+            return
+        }
+        status.is_codeSending = true
+        Ajax<Response_GetCode>({
+            url: APIURI.SENDEMAILCODE,
+            type: "POST",
+            data: {
+                email: formData.email
+            },
+            success(data) {
+                if (data.code == 1) {
+                    Snackbar.builder("验证码已发送，请注意查收")
+                    status.codeButtonLabel = 60
+                    const interval = setInterval(() => {
+                        if (status.codeButtonLabel == 0) {
+                            clearInterval(interval)
+                            return
+                        }
+                        status.codeButtonLabel--
+                    }, 1000)
+                }
+                else
+                    Snackbar.builder({ text: `${data?.msg} ${data.code}`, type: "error" })
+            },
+            error(s, m) {
+                Snackbar.builder({ text: `调用获取验证码接口时出现错误:${s} ${m}`, type: "error" })
+            }
+        }).then(() => status.is_codeSending = false)
+    },
+    register() {
+        if (!formData.username ||
+            !formData.password ||
+            !formData.code ||
+            !formData.email ||
+            !formData.repassword) {
             Snackbar.builder({ text: "请填写完整", type: "error" })
+            return
+        }
+        if (!regex.email ||
+            !regex.password ||
+            !regex.repassword ||
+            !regex.username
+        ) {
+            Snackbar.builder({ text: "请保证填写信息符合复杂性要求", type: "error" })
             return
         }
         status.is_registering = true
@@ -125,9 +192,9 @@ const methods = {
             },
             success(data) {
                 if (data.code == 1) {
-                    //登录成功
-                    $store.state.logined = true
-                    Snackbar.builder("注册完成")
+                    //注册成功
+                    Snackbar.builder("注册完成，请登录")
+                    $router.push('/auth/login')
                 } else {
                     Snackbar.builder({ text: data.msg, type: "error" })
                 }
@@ -137,19 +204,12 @@ const methods = {
             }
         }).then(() => status.is_registering = false)
     },
-    sendCode() {
-
-    }
 }
 </script>
 <style lang="scss" scoped>
 div {
     width: 100%;
     max-width: 350px;
-
-    h1 {
-        margin: 0;
-    }
 
     p.tip {
         font-size: 13px;
