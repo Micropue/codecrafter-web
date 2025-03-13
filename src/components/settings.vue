@@ -57,8 +57,10 @@ const $router = useRouter()
 const $store = useStore()
 const data = reactive<{
     themecolor: any
+    bigText: boolean
 }>({
-    themecolor: ""
+    themecolor: "",
+    bigText: false
 })
 //主题设置
 const methods = {
@@ -71,7 +73,7 @@ const methods = {
     clearHistory() {
         cookie.set(SEARCH_HISTORY_NAME, "")
         Snackbar.builder("清空完成，请刷新页面。")
-    }
+    },
 }
 onMounted(methods.getTheme)
 </script>

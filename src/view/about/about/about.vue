@@ -5,15 +5,18 @@
         <main v-html="data" ref="main"></main>
     </div>
 </template>
-<script setup>
+<script setup lang="ts">
 import { Snackbar } from 'sober'
 import { onMounted, ref } from 'vue'
 import { marked } from 'marked'
 import HeadlineList from '@/components/headline-list.vue'
-const data = ref('')
+const data = ref<string>('')
 const loaded = ref(false)
-const list = ref([])
-const main = ref(null)
+const list = ref<{
+    name:string | null,
+    location:number
+}[]>([])
+const main = ref<HTMLElement | null>(null)
 const methods = {
     getMD() {
         return new Promise((resolve, reject) => {
@@ -24,7 +27,7 @@ const methods = {
                 if (xhr.readyState !== 4) return
                 loaded.value = true
                 if (xhr.status == 200) {
-                    const res = xhr.responseText
+                    const res: string = xhr.responseText
                     resolve(res)
                 } else {
                     Snackbar.builder({ text: "无法获取存储库文件", type: "error" })
@@ -36,16 +39,22 @@ const methods = {
 }
 onMounted(() => {
     methods.getMD().then(v => {
-        data.value = marked.parse(v)
+        const _v: string = String(v)
+        data.value = marked.parse(_v, {
+            async: false
+        })
         setTimeout(() => {
-            const html = [...main.value.querySelectorAll("h1,h2,h3,h4,h5,h6")]
-            html.forEach(self => {
-                const location = self.getBoundingClientRect().top
-                const name = self.innerText
-                list.value.push({
-                    name, location
+            if (main.value) {
+                const html = [...main.value.querySelectorAll("h1,h2,h3,h4,h5,h6")]
+                html.forEach(self => {
+                    const ele = self
+                    const location = ele.getBoundingClientRect().top
+                    const name = ele.textContent
+                    list.value.push({
+                        name, location
+                    })
                 })
-            })
+            }
         })
     })
 })

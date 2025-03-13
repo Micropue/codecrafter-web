@@ -1,5 +1,6 @@
 <template>
-    <s-icon-button slot="start" type="filled-tonal" :disabled="!status.loaded"  title="个人" @click="$router.push('/auth')">
+    <s-icon-button slot="start" type="filled-tonal" :disabled="!status.loaded" title="个人"
+        @click="$router.push('/auth')">
         <s-icon v-if="status.loaded">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
                 <path
@@ -16,13 +17,14 @@ import Ajax from '@/api/xhr'
 import APIURI from '@/api/apiurls'
 import { Snackbar } from 'sober'
 import { useStore } from 'vuex'
+import type { Response_LoginCheck } from '@/api/apitype'
 const $store = useStore()
 const status = reactive({
     loaded: false
 })
 const methods = {
     checklogin() {
-        Ajax({
+        Ajax<Response_LoginCheck>({
             url: APIURI.CHECK_LOGIN,
             success(data) {
                 if (data.code == 1) {

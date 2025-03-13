@@ -14,13 +14,12 @@ const routes = [
     { name: "blog", path: "/blog", component: () => import('./view/blog/blog.vue') },
     { name: "projects", path: "/projects", component: () => import('./view/projects/projects.vue') },
     { name: "chat", path: "/chat", component: () => import('./view/chat/chat.vue') },
-    { name: "auth", path: "/auth", component: () => import('./view/auth/auth.vue') },
     {
-        path: "/auth/login", component: () => import('./view/auth/login/index.vue'),
+        name: "auth", path: "/auth", component: () => import('./view/auth/auth.vue'),
         children: [
-            { name: "login", path: "", component: () => import('./view/auth/login/login/login.vue') },
-            { name: "register", path: "register", component: () => import('./view/auth/login/register/register.vue') },
-            { name: "restpwd", path: "restpwd", component: () => import('./view/auth/login/restpwd/restpwd.vue') },
+            { name: "login", path: "login", component: () => import('./view/auth/login/login.vue') },
+            { name: "register", path: "register", component: () => import('./view/auth/register/register.vue') },
+            { name: "restpwd", path: "restpwd", component: () => import('./view/auth/restpwd/restpwd.vue') },
         ]
     },
     { name: "404", path: "/:catchAll()", component: Error404 }
@@ -31,9 +30,9 @@ const router = createRouter({
 })
 router.beforeEach((to, from, next) => {
     store.commit('load')
-    if(to.name == "auth"){
+    if (to.name == "auth") {
         store.state.logined ? next() : next("/auth/login")
-    }else{
+    } else {
         next()
     }
 })

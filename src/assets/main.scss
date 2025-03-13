@@ -1,10 +1,9 @@
-
 html,
 body {
     height: 100%;
     width: 100%;
     overflow: hidden;
-    margin:0;
+    margin: 0;
 }
 
 body #app {
@@ -19,24 +18,19 @@ body #app {
 s-page[dark] {
     --inverted: 100%;
 }
-a{
-    $color:rgb(0, 166, 255);
-    color:$color;
+
+a {
+    $color: var(--s-color-primary);
+    display: inline;
+    color: $color;
     text-decoration: none;
-    position: relative;
-    &::after{
-        content:'';
-        position: absolute;
-        bottom:0;
-        left:0;
-        right:0;
-        width:0%;
-        height:1px;
-        margin:auto;
-        background-color: $color;
-        transition: width 0.3s;
-    }
-    &:hover::after{
-        width:100%;
+    background-image: linear-gradient(to right, $color, $color);
+    background-position: bottom left;
+    background-size: 0% 1px;
+    background-repeat: no-repeat;
+    transition: background-size 0.4s;
+    &:hover{
+        background-position: bottom right;
+        background-size: 100% 1px;
     }
 }

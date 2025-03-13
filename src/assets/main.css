@@ -20,22 +20,16 @@ s-page[dark] {
 }
 
 a {
-  color: rgb(0, 166, 255);
+  display: inline;
+  color: var(--s-color-primary);
   text-decoration: none;
-  position: relative;
+  background-image: linear-gradient(to right, var(--s-color-primary), var(--s-color-primary));
+  background-position: bottom left;
+  background-size: 0% 1px;
+  background-repeat: no-repeat;
+  transition: background-size 0.4s;
 }
-a::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 0%;
-  height: 1px;
-  margin: auto;
-  background-color: rgb(0, 166, 255);
-  transition: width 0.3s;
-}
-a:hover::after {
-  width: 100%;
+a:hover {
+  background-position: bottom right;
+  background-size: 100% 1px;
 }/*# sourceMappingURL=main.css.map */

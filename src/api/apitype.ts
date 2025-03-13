@@ -6,5 +6,15 @@ export interface Response_LoginCheck {
 }
 //获取用户信息
 export interface Response_GetUserInfo {
-    
+
+}
+//登录
+export interface Response_Login {
+    code: number,
+    msg: string
+}
+//注册
+export interface Response_Register {
+    code: number,
+    msg: string
 }

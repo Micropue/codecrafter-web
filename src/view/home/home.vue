@@ -61,7 +61,7 @@ const $router = useRouter()
 }
 
 .special {
-    background-image: linear-gradient(to right, rgb(197, 24, 232), rgb(0, 149, 255));
+    background-image: linear-gradient(to right, var(--s-color-primary), rgb(0, 149, 255));
     font-weight: 300;
     background-clip: text;
     color: transparent;

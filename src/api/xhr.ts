@@ -1,14 +1,14 @@
 //xhr封装
-interface Options {
+interface Options<T> {
     url: string, //请求地址
     type?: "GET" | "POST", //请求方式
     data?: {
         [query: string]: string
     },//数据
-    success?(data: any, status: number): void, //请求成功：200
+    success?(data: T, status: number): void, //请求成功：200
     error?(status: number, message: string): void //请求失败 !200
 }
-function Ajax(options: Options):Promise<null> {
+function Ajax<T>(options: Options<T>): Promise<null> {
     const type = options.type === "POST" ? "POST" : "GET"
     const url = options.url ?? console.error("can't find params \"url\" or it's empty")
     let data = ""
@@ -24,7 +24,8 @@ function Ajax(options: Options):Promise<null> {
     }
     const xhr = new XMLHttpRequest()
     xhr.open(type, url + (type === "GET" ? data : ""))
-    xhr.setRequestHeader('Content-type', "x-www-form-urlencoded")
+    if (type === "POST")
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
     xhr.send(type === "POST" ? data : null)
     return new Promise((done) => {
         xhr.onreadystatechange = () => {
@@ -33,7 +34,7 @@ function Ajax(options: Options):Promise<null> {
             if (xhr.status === 200) {
                 const response = xhr.responseText || ""
                 try {
-                    const data = JSON.parse(response)
+                    const data:T = JSON.parse(response)
                     success(data, xhr.status)
                 } catch (e) {
                     error(xhr.status, e)
