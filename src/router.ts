@@ -7,7 +7,8 @@ const routes = [
         path: "/about", component: () => import('./view/about/about.vue'),
         children: [
             { name: "about", path: "", component: () => import('./view/about/about/about.vue') },
-            { name: "joinus", path: "joinus", component: () => import('./view/about/joinus/joinus.vue') }
+            { name: "joinus", path: "joinus", component: () => import('./view/about/joinus/joinus.vue') },
+            { name: "privacy", path: "privacy", component: () => import('./view/about/privacy/privacy.vue') }
         ]
     },
     { name: "community", path: "/community", component: () => import('./view/community/community.vue') },
@@ -22,7 +23,7 @@ const routes = [
             { name: "restpwd", path: "restpwd", component: () => import('./view/auth/restpwd/restpwd.vue') },
         ]
     },
-    { name: "404", path: "/:catchAll()", component: Error404 }
+    { name: "404", path: "/:catchAll(.*)", component: Error404 }
 ]
 const router = createRouter({
     history: createWebHistory(),
@@ -32,9 +33,13 @@ router.beforeEach((to, from, next) => {
     store.commit('load')
     if (to.name == "auth") {
         store.state.logined ? next() : next("/auth/login")
-    } else {
-        next()
+        return
     }
+    if(["login","register","resetpwd"].includes(String(to.name)) && store.state.logined){
+        next('/auth')
+        return
+    }
+    next()
 })
 router.afterEach((to, from) => {
     store.commit('loaded')

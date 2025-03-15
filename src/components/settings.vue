@@ -40,7 +40,7 @@
                 & codecrafter团队<br>©️2025</p>
             <br>
             <s-button @click="$router.push('/about')">关于网站</s-button>
-            <s-button @click="$router.push('/about')">贡献人员</s-button>
+            <s-button @click="$router.push('/about/privacy')">隐私政策</s-button>
         </div>
         <s-button slot="action" type="text">完成</s-button>
     </s-dialog>

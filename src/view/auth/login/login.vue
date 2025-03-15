@@ -43,6 +43,8 @@ import { Snackbar } from 'sober'
 import { reactive } from 'vue'
 import type { Response_Login } from '@/api/apitype'
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
+const $router = useRouter()
 const $store = useStore()
 interface FormData {
     username: string,
@@ -78,6 +80,7 @@ const methods = {
                     //登录成功
                     $store.state.logined = true
                     Snackbar.builder("登录成功")
+                    $router.push('/auth')
                 } else {
                     Snackbar.builder({ text: data.msg, type: "error" })
                 }

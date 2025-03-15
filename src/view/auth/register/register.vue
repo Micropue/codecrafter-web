@@ -122,7 +122,7 @@ const methods = {
             regex.username = /^(.){2,20}$/.test(formData.username)
         },
         password: () => {
-            regex.password = /^([a-zA-Z0-9_\-]*){6,16}$/.test(formData.password)
+            regex.password = /^([a-zA-Z0-9_\-]+){6,16}$/.test(formData.password)
         },
         repassword: () => {
             regex.repassword = formData.password == formData.repassword

@@ -23,3 +23,8 @@ export interface Response_GetCode {
     code: number,
     msg?: string
 }
+//重置密码
+export interface Response_Restpwd{
+    code:number,
+    msg?:string
+}
