@@ -8,6 +8,8 @@
         <p>你进入了不存在的页面。。。</p>
     </div>
 </template>
+<script setup lang="ts">
+</script>
 <style lang="scss" scoped>
 p {
     position: absolute;
